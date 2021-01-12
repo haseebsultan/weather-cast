@@ -17,7 +17,7 @@ stages:
       - script: echo Hello JOB 1!
       - script: echo $(isMain)
       - task: ArchiveFiles@2
-        condition: and(succeeded(), eq(variables.isMain, true))
+        condition: and(succeeded(), eq('Build.SourceBranch', 'refs/heads/dev'))
         inputs:
           rootFolderOrFile: '$(Build.BinariesDirectory)'
           includeRootFolder: true
@@ -25,7 +25,7 @@ stages:
           archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
           replaceExistingArchive: true
       - task: ArchiveFiles@2
-        condition: and(succeeded(), eq(variables.isdev, true))
+        condition: and(succeeded(), eq('Build.SourceBranch', 'refs/heads/master'))
         inputs:
           rootFolderOrFile: '$(Build.BinariesDirectory)'
           includeRootFolder: true
