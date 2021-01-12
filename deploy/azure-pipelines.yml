@@ -16,6 +16,22 @@ stages:
     steps:
       - script: echo Hello JOB 1!
       - script: echo $(isMain)
+      - task: ArchiveFiles@2
+        condition: and(succeeded(), eq(variables.isMain, true))
+        inputs:
+          rootFolderOrFile: '$(Build.BinariesDirectory)'
+          includeRootFolder: true
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+          replaceExistingArchive: true
+      - task: ArchiveFiles@2
+        condition: and(succeeded(), eq(variables.isdev, true))
+        inputs:
+          rootFolderOrFile: '$(Build.BinariesDirectory)'
+          includeRootFolder: true
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+          replaceExistingArchive: true
   - job: JOB2
     condition: and(succeeded(), eq(variables.isdev, true))
     steps:
