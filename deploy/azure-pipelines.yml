@@ -7,6 +7,13 @@ stages:
   - job: A1
     steps:
       - script: echo Hello Stage A!
+      - task: ArchiveFiles@2
+        inputs:
+          rootFolderOrFile: '$(Build.BinariesDirectory)'
+          includeRootFolder: true
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+          replaceExistingArchive: true
 
 - stage: B
   condition: and(succeeded(), eq(variables.isMain, true))
