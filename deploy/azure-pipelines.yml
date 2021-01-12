@@ -1,5 +1,6 @@
 variables:
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+  isdev: $[eq(variables['Build.SourceBranch'], 'refs/heads/dev')]
 
 stages:
 - stage: A
@@ -9,9 +10,14 @@ stages:
       - script: echo Hello Stage A!
 
 - stage: B
-  condition: and(succeeded(), eq(variables.isMain, true))
   jobs:
-  - job: B1
+  - job: JOB1
+    condition: and(succeeded(), eq(variables.isMain, true))
     steps:
-      - script: echo Hello Stage B!
+      - script: echo Hello JOB 1!
       - script: echo $(isMain)
+  - job: JOB2
+    condition: and(succeeded(), eq(variables.isdev, true))
+    steps:
+      - script: echo Hello JOB 2!
+      - script: echo $(isdev)
