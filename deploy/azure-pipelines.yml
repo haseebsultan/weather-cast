@@ -17,7 +17,7 @@ stages:
       - script: echo Hello JOB 1!
       - script: echo $(isMain)
       - task: ArchiveFiles@2
-        condition: and(succeeded(), eq($(Build.SourceBranch), 'refs/heads/dev'))
+        condition: and(succeeded(), eq('$(Build.SourceBranch)', 'refs/heads/dev'))
         inputs:
           rootFolderOrFile: '$(Build.BinariesDirectory)'
           includeRootFolder: true
