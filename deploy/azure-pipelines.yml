@@ -5,4 +5,4 @@ variables:
 
 steps:
 - script: echo $(MyRunNumber) # display MyRunNumber
-- script: echo $(Build.SourceBranchName)$(Build.BuildId)
+- script: echo $(Build.SourceBranchName)_$(Build.BuildId)
