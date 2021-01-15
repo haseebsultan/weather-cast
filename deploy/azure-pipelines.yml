@@ -1,39 +1,8 @@
-variables:
-  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
-  isdev: $[eq(variables['Build.SourceBranch'], 'refs/heads/dev')]
+# Set MyRunNumber
+variables: 
+  MyRunNumber: '1.0.0-CI+$(Build.BuildNumber)'
 
-stages:
-- stage: A
-  jobs:
-  - job: A1
-    steps:
-      - script: echo Hello Stage A!
 
-- stage: B
-  jobs:
-  - job: JOB1
-    condition: and(succeeded(), eq(variables.isMain, true))
-    steps:
-      - script: echo Hello JOB 1!
-      - script: echo $(isMain)
-      - task: ArchiveFiles@2
-        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
-        inputs:
-          rootFolderOrFile: '$(Build.BinariesDirectory)'
-          includeRootFolder: true
-          archiveType: 'zip'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-          replaceExistingArchive: true
-      - task: ArchiveFiles@2
-        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-        inputs:
-          rootFolderOrFile: '$(Build.BinariesDirectory)'
-          includeRootFolder: true
-          archiveType: 'zip'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-          replaceExistingArchive: true
-  - job: JOB2
-    condition: and(succeeded(), eq(variables.isdev, true))
-    steps:
-      - script: echo Hello JOB 2!
-      - script: echo $(isdev)
+steps:
+- script: echo $(MyRunNumber) # display MyRunNumber
+- script: echo $(Build.BuildNumber) #display Run Number
